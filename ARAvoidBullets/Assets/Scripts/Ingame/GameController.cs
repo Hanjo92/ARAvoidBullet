@@ -10,6 +10,7 @@ namespace ARAvoid
 		// State -> AR Setting -> Play
 		//Add AR Manager
 
+		
 
 		private bool setUp = false;
 		private float startTime;
