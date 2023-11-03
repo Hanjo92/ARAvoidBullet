@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace ARAvoid
 {
@@ -15,6 +17,7 @@ namespace ARAvoid
 		public int dashCount;
 		public int avoidBullets;
 		public int playCount;
+
 		// Options
 		public bool leftHand;
 		public float volume;
@@ -24,14 +27,14 @@ namespace ARAvoid
 		{
 			var data = new SaveData()
 			{
-				maxTime = PlayerPrefs.GetFloat( DataKeys.HighScore, 0 ),
-				dashCount = PlayerPrefs.GetInt( DataKeys.DashCount, 0 ),
-				avoidBullets = PlayerPrefs.GetInt( DataKeys.Bullets, 0 ),
-				playCount = PlayerPrefs.GetInt(DataKeys.PlayCount, 0),
+				maxTime = PlayerPrefs.GetFloat(Keys.HighScore, 0),
+				dashCount = PlayerPrefs.GetInt(Keys.DashCount, 0),
+				avoidBullets = PlayerPrefs.GetInt(Keys.Bullets, 0),
+				playCount = PlayerPrefs.GetInt(Keys.PlayCount, 0),
 
-				leftHand = PlayerPrefs.GetInt( DataKeys.UseLeftHand, 0 ) == 1,
-				volume = PlayerPrefs.GetFloat(DataKeys.GameVolume, 1),
-				reduceEffect = PlayerPrefs.GetInt(DataKeys.ReduceEffect, 0) == 1
+				leftHand = PlayerPrefs.GetInt( Keys.UseLeftHand, 0 ) == 1,
+				volume = PlayerPrefs.GetFloat(Keys.GameVolume, 1),
+				reduceEffect = PlayerPrefs.GetInt(Keys.ReduceEffect, 0) == 1
 			};
 
 			return data;
@@ -45,5 +48,16 @@ namespace ARAvoid
 			playCount++;
 			this.SavePlayData();
 		}
+	}
+
+	public static class OptionData
+	{
+		public static bool UseLeftHandMode => PlayerPrefs.GetInt(Keys.UseLeftHand, 0 ) == 1;
+		public static bool ReduceEffect => PlayerPrefs.GetInt(Keys.ReduceEffect, 0) == 1;
+		public static float volume => PlayerPrefs.GetFloat(Keys.GameVolume, 1);
+
+		public static void SetUseLeftHandMode(bool value) => PlayerPrefs.SetInt(Keys.UseLeftHand, value ? 1 : 0);
+		public static void SetReduceEffect(bool value) => PlayerPrefs.SetInt(Keys.ReduceEffect, value ? 1 : 0);
+		public static void SetVolume(float value) => PlayerPrefs.SetFloat(Keys.GameVolume, value);
 	}
 }

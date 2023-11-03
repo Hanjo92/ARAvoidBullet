@@ -23,8 +23,8 @@ namespace Almond
 
 	public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 	{
-		static MonoSingleton<T> _inst;
-		public static MonoSingleton<T> Inst => _inst;
+		private static MonoSingleton<T> _inst;
+		private static MonoSingleton<T> Inst => _inst;
 		public static T Instance => Inst as T;
 
 		private void Awake()

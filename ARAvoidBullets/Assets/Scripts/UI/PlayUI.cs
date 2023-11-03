@@ -1,18 +1,24 @@
+using ARAvoid;
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayUI : MonoBehaviour
+namespace ARAvoid
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public class PlayUI : MonoBehaviour, Page
+	{
+		public string Key => Keys.PlayUIKey;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+		public async UniTask Active()
+		{
+			await GameManager.EffectManager.ToggleGlitch(true);
+			// ¸Ê ¼¼ÆÃ
+		}
+
+		public async UniTask Inactive()
+		{
+			await GameManager.EffectManager.ToggleGlitch(false);
+		}
+	}
 }
