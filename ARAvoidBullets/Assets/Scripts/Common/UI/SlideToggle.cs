@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Unity.Collections;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Almond
 {
-	public class SlideToggle : Toggle
+	[RequireComponent(typeof(Toggle))]
+	public class SlideToggle : MonoBehaviour
 	{
 		protected const float SlideTime = 0.2f;
 
@@ -23,9 +23,9 @@ namespace Almond
 		[SerializeField] private ParticleSystem effect; 
 
 		private Toggle toggle;
-		protected override void Awake()
+		protected virtual void Awake()
 		{
-			base.Awake();
+			toggle = GetComponent<Toggle>();
 			SetColors();
 
 			toggle.onValueChanged.AddListener(ChangeValueAction);
@@ -33,8 +33,8 @@ namespace Almond
 
 		protected virtual void SetColors()
 		{
-			SelectedColor = colors.selectedColor;
-			DisabledColor = colors.disabledColor;
+			SelectedColor = toggle.colors.selectedColor;
+			DisabledColor = toggle.colors.disabledColor;
 		}
 		protected virtual void ChangeValueAction(bool value)
 		{
@@ -47,12 +47,12 @@ namespace Almond
 
 		public void SetValueImmediately(bool newValue)
 		{
-			isOn = newValue;
+			toggle.isOn = newValue;
 			ChangeColor(0);
 			ChangeHandlePosition(0);
 		}
 
-		protected void ChangeColor(float time) => toggleBG?.DOColor(isOn ? SelectedColor : DisabledColor, time);
-		protected void ChangeHandlePosition(float time) => handle?.transform.DOMove(isOn ? handleTrue.position : handleFalse.position, time);
+		protected void ChangeColor(float time) => toggleBG?.DOColor( toggle.isOn ? SelectedColor : DisabledColor, time);
+		protected void ChangeHandlePosition(float time) => handle?.transform.DOMove( toggle.isOn ? handleTrue.position : handleFalse.position, time);
 	}
 }

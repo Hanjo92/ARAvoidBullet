@@ -10,17 +10,15 @@ namespace ARAvoid
 		protected override Color SelectedColor => themaColors.selectedUI;
 		protected override Color DisabledColor => themaColors.disabledUI;
 
-		protected override void OnEnable()
+		protected virtual void OnEnable()
 		{
-			base.OnEnable();
 			ThemaManager.Inst.AddListener(ApplyThema);
 			thema = ThemaManager.Inst.CurrentThema;
 			ApplyThema(thema, true);
 			themaColors = GameManager.DataContainer.GetThemaColors(thema);
 		}
-		protected override void OnDisable()
+		protected virtual void OnDisable()
 		{
-			base.OnDisable();
 			ThemaManager.Inst.RemoveListener(ApplyThema);
 		}
 
@@ -29,5 +27,6 @@ namespace ARAvoid
 			thema = newThema;
 			ChangeColor(Immediate ? 0 : SlideTime);
 		}
+
 	}
 }
