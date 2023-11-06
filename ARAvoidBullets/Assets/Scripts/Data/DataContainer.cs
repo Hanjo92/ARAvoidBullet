@@ -14,7 +14,7 @@ namespace ARAvoid
 		[SerializeField] private Material[] mapThemaMaterials = new Material[typeof(Thema).Lenght()];
 		public Material GetMapThemaMaterial( Thema thema ) => mapThemaMaterials[ (int)thema ];
 
-		[ Serializable]
+		[Serializable]
 		public class BulletMaterials
 		{
 			public string BulletKey;

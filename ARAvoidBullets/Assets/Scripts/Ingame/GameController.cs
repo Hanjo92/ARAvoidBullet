@@ -13,21 +13,23 @@ namespace ARAvoid
 		
 
 		private bool setUp = false;
-		private float startTime;
+		private float countTime;
 		private bool isPaused = false;
 		public bool IsPaused => isPaused;
 		private bool isContacted = false;
-
+		private PlayData playData;
+		public float AvoidTime => playData.avoidTime;
 		public void Pause() => isPaused = true;
 		public void Resume() => isPaused = false;
 
 		//TODO : Add cts
 		public async UniTask<bool> PlayGame()
 		{
+			playData = new PlayData();
 			isPaused = false;
 			setUp = false;
 			isContacted = false;
-			startTime = Defines.StartCountDown;
+			countTime = Defines.StartCountDown;
 			// Ridar Setup
 			await UniTask.WaitUntil( () => setUp );
 			// Count down
@@ -35,16 +37,21 @@ namespace ARAvoid
 			{
 				if( isPaused == false)
 				{
-					startTime -= Time.deltaTime;
+					countTime -= Time.deltaTime;
 					// TODO : Update Count UI
 				}
 
-				return startTime <= 0;
+				return countTime <= 0;
 			} );
 			// Game Play
 
 			await UniTask.WaitUntil( () =>
 			{
+				if(isPaused == false)
+				{
+					playData.avoidTime += Time.deltaTime;
+				}
+
 				return isContacted;
 			} );
 			// Direction

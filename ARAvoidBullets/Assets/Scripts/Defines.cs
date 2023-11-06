@@ -23,9 +23,9 @@ namespace ARAvoid
         public const float MaxMapHeight = 3f;
 
         public const float MapMaxAwayDistance = 10f;
-        public const float GlitchTime = 1.5f;
-		public const float ChangeThemaTime = 1f;
+		public const float ChangeThemaTime = 0.2f;
 
+        public const float GlitchTime = 1.5f;
 		public const string GlitchRatioProperty = "_GlitchRatio";
 	}
 

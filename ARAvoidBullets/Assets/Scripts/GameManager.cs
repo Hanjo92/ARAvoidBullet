@@ -11,19 +11,25 @@ namespace ARAvoid
 {
 	public class GameManager : MonoSingleton<GameManager>
 	{
-		[SerializeField] private EffectManager effectManager;
-		[SerializeField] private DataContainer dataContainer;
-		[SerializeField] private GameController gameController;
-		[SerializeField] private Page[] pages; 
+		#region ScriptableObject
 
+		[SerializeField] private DataContainer dataContainer;
+		[SerializeField] private AddressableContainer addressableContainer;
+		#endregion
+
+		[SerializeField] private EffectManager effectManager;
+		[SerializeField] private GameController gameController;
+		[SerializeField] private IPage[] pages; 
+
+		public static DataContainer DataContainer => Instance.dataContainer;
+		public static AddressableContainer AddressableContainer => Instance.addressableContainer;
 		public static GameController GameController => Instance.gameController;
 		public static EffectManager EffectManager => Instance.effectManager;
-		public static DataContainer DataContainer => Instance.dataContainer;
 
 		private CancellationTokenSource gameCTS;
 
 		private SaveData saveData;
-		private Page currentPage;
+		private IPage currentPage;
 
 		private bool changingPage;
 		private void Awake()
@@ -49,10 +55,13 @@ namespace ARAvoid
 			ChangePage(nextPage).Forget();
 		}
 
-		public async UniTaskVoid ChangePage(Page nextPage)
+		public async UniTaskVoid ChangePage(IPage nextPage)
 		{
 			if(currentPage != null)
+			{
 				await currentPage.Inactive();
+
+			}
 
 			currentPage = nextPage;
 			await currentPage.Active();

@@ -28,7 +28,7 @@ namespace Almond
 			toggle = GetComponent<Toggle>();
 			SetColors();
 
-			toggle.onValueChanged.AddListener(ChangeValueAction);
+			toggle?.onValueChanged.AddListener(OnChangeValue);
 		}
 
 		protected virtual void SetColors()
@@ -36,7 +36,7 @@ namespace Almond
 			SelectedColor = toggle.colors.selectedColor;
 			DisabledColor = toggle.colors.disabledColor;
 		}
-		protected virtual void ChangeValueAction(bool value)
+		protected virtual void OnChangeValue(bool value)
 		{
 			if(effect != null)
 				effect.Play();

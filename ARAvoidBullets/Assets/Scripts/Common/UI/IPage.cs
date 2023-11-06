@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
-namespace ARAvoid
+namespace Almond
 {
-	public interface Page
+	public interface IPage
 	{
 		string Key { get; }
 		UniTask Active();

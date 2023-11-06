@@ -7,13 +7,14 @@ using DG.Tweening;
 
 namespace ARAvoid
 {
-	public class MainUI : MonoBehaviour, Page
+	public class MainUI : Almond.PageBase
 	{
+		[SerializeField] private Image mask;
 		[SerializeField] private GameObject title;
 		[SerializeField] private Button playButton;
 		[SerializeField] private Button optionButton;
 
-		public string Key => Keys.MainUIKey;
+		public override string Key => Keys.MainUIKey;
 
 		private void Awake()
 		{
@@ -21,7 +22,13 @@ namespace ARAvoid
 			optionButton.onClick.AddListener(() => GameManager.Instance.OnClickChangePage(Keys.OptionUIKey));
 		}
 
-		public async UniTask Active()
+		private void OnEnable()
+		{
+			var themaColors = GameManager.DataContainer.GetThemaColors(ThemaManager.Inst.CurrentThema);
+
+		}
+
+		public override async UniTask Active()
 		{
 			title.transform.DOScale(Vector3.zero, 0);
 			playButton.transform.DOScale(Vector3.zero, 0);
@@ -34,7 +41,7 @@ namespace ARAvoid
 			await GameManager.EffectManager.ToggleGlitch(true);
 		}
 
-		public async UniTask Inactive()
+		public override async UniTask Inactive()
 		{
 			title.transform.DOScale(Vector3.one, 0);
 			playButton.transform.DOScale(Vector3.one, 0);

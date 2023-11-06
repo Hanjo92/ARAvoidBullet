@@ -1,24 +1,32 @@
-using ARAvoid;
-using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using Almond;
 
 namespace ARAvoid
 {
-	public class PlayUI : MonoBehaviour, Page
+	public class PlayUI : MonoBehaviour
 	{
-		public string Key => Keys.PlayUIKey;
+		[SerializeField] private TextMeshProUGUI highScore;
+		[SerializeField] private TextMeshProUGUI currentScore;
+		[SerializeField] private Button pauseButton;
+		[SerializeField] private Button dashButton;
+		[SerializeField] private Joystick joystick;
 
-		public async UniTask Active()
+		private void Awake()
 		{
-			await GameManager.EffectManager.ToggleGlitch(true);
-			// ¸Ê ¼¼ÆÃ
+			pauseButton.onClick.AddListener(() =>
+			{
+				GameManager.GameController.Pause();
+				PoppupManager.ShowPopup("PausedPopup");
+			});
 		}
 
-		public async UniTask Inactive()
+		public void Initialize()
 		{
-			await GameManager.EffectManager.ToggleGlitch(false);
+			
 		}
 	}
 }

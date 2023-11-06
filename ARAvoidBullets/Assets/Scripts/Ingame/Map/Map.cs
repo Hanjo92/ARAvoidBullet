@@ -20,7 +20,7 @@ namespace ARAvoid
 			mesh = meshFilter.mesh;
 		}
 
-		public async UniTask SetupVertices(Vector3[] coords)
+		public void SetupVertices(Vector3[] coords)
 		{
 			vertices = coords;
 			mesh.SetVertices( vertices );
@@ -28,9 +28,13 @@ namespace ARAvoid
 
 		}
 
-		public void SetThema(int thema)
+		public void SetThema(Thema thema)
 		{
+			var mapMaterial = meshRenderer.sharedMaterial;
+			var themaColor = GameManager.DataContainer.GetThemaColors(thema);
 
+			mapMaterial.SetColor("_MainColor", themaColor.main);
+			mapMaterial.SetColor("_TrailColor", themaColor.dark);
 		}
 	}
 }
