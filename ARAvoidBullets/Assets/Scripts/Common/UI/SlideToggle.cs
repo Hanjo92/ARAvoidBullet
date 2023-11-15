@@ -4,55 +4,55 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Unity.Collections;
+using UnityEditor.UI;
 
 namespace Almond
 {
-	[RequireComponent(typeof(Toggle))]
-	public class SlideToggle : MonoBehaviour
+	public class SlideToggle : Toggle
 	{
 		protected const float SlideTime = 0.2f;
 
-		[Header("Handle")]
-		[SerializeField] private RectTransform handle;
-		[ReadOnly][SerializeField] private RectTransform handleTrue;
-		[ReadOnly][SerializeField] private RectTransform handleFalse;
-		[Header("Toggle Effect")]
-		[SerializeField] private Image toggleBG;
-		protected virtual Color SelectedColor { get; set; }
-		protected virtual Color DisabledColor { get; set; }
-		[SerializeField] private ParticleSystem effect; 
+		public Image handle;
+		[ReadOnly] public RectTransform handleTrue;
+		[ReadOnly] public RectTransform handleFalse;
+		[Space(10)]
+		public Image toggleBG;
+		public ParticleSystem effect; 
 
-		private Toggle toggle;
-		protected virtual void Awake()
+		protected virtual Color SelectedColor => colors.selectedColor;
+		protected virtual Color DisabledColor => colors.disabledColor;
+
+		protected override void Awake()
 		{
-			toggle = GetComponent<Toggle>();
-			SetColors();
-
-			toggle?.onValueChanged.AddListener(OnChangeValue);
-		}
-
-		protected virtual void SetColors()
-		{
-			SelectedColor = toggle.colors.selectedColor;
-			DisabledColor = toggle.colors.disabledColor;
+			onValueChanged.AddListener(OnChangeValue);
 		}
 		protected virtual void OnChangeValue(bool value)
 		{
 			if(effect != null)
 				effect.Play();
 
-			ChangeColor(SlideTime);
+			ChangeHandleColor(SlideTime);
 			ChangeHandlePosition(SlideTime);
 		}
 
 		public void SetValueImmediately(bool newValue)
 		{
-			toggle.isOn = newValue;
-			ChangeColor(0);
+			isOn = newValue;
+			ChangeHandleColor(0);
 			ChangeHandlePosition(0);
 		}
 
-		protected void ChangeColor(float time) => toggleBG?.DOColor( toggle.isOn ? SelectedColor : DisabledColor, time);
-		protected void ChangeHandlePosition(float time) => handle?.transform.DOMove( toggle.isOn ? handleTrue.position : handleFalse.position, time);
+		protected virtual void ChangeHandleColor(float time)
+		{
+			if(handle == null)
+				return;
+			handle.DOColor(isOn ? SelectedColor : DisabledColor, time);
+		}
+		protected void ChangeHandlePosition(float time)
+		{
+			if(handle == null || handleTrue == null || handleFalse == null)
+				return;
+			handle.transform.DOMove(isOn ? handleTrue.position : handleFalse.position, time); 
+		}
 	}
 }

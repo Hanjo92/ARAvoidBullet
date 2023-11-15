@@ -7,9 +7,10 @@ using System.Linq;
 
 namespace Almond
 {
-	[CreateAssetMenu(fileName = "AddressableContainer", menuName = "Almond")]
+	[CreateAssetMenu(fileName = "AddressableContainer", menuName = "Almond/AddressableContainer")]
 	public class AddressableContainer : ScriptableObject
 	{
+		[Serializable]
 		private class Addressable
 		{
 			public string key;
@@ -20,14 +21,25 @@ namespace Almond
 
 		public async UniTask<GameObject> Instance(string key)
 		{
-			var assetRef = container.FirstOrDefault(x => x.key == key);
-			if(key == null)
+			if(string.IsNullOrEmpty(key))
+			{
+				Debug.LogWarning($"Key is null or empty");
+				return null;
+			}
+
+			var addressable = container.FirstOrDefault(x => x.key == key);
+			if(addressable == null)
 			{
 				Debug.LogWarning($"AssetReference not found :: {key}");
 				return null;
 			}
+			if(addressable.asset == null)
+			{
+				Debug.LogWarning($"AssetReference is null :: {key}");
+				return null;
+			}
 
-			return await Addressables.InstantiateAsync(assetRef);
+			return await Addressables.InstantiateAsync(addressable.asset);
 		}
 		public async UniTask<T> InstanceComponent<T>(string key) where T : Component
 		{

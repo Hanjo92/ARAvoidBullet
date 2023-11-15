@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Almond;
 
 namespace ARAvoid
 {
@@ -31,9 +32,9 @@ namespace ARAvoid
 		public void SetThema(Thema thema)
 		{
 			var mapMaterial = meshRenderer.sharedMaterial;
-			var themaColor = GameManager.DataContainer.GetThemaColors(thema);
+			var themaColor = ThemaManager.Inst.GetThemaColors();
 
-			mapMaterial.SetColor("_MainColor", themaColor.main);
+			mapMaterial.SetColor("_MainColor", themaColor.main1);
 			mapMaterial.SetColor("_TrailColor", themaColor.dark);
 		}
 	}

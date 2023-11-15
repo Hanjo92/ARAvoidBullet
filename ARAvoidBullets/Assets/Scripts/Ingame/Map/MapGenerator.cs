@@ -9,6 +9,11 @@ using UnityEngine.Video;
 
 namespace ARAvoid
 {
+	/// <summary>
+	// Ridar Setup
+	// await UniTask.WaitUntil(() => setUp );
+	/// </summary>
+
 	public class MapGenerator : MonoBehaviour
 	{
 		public int verticsCount = 10;

@@ -27,7 +27,7 @@ namespace Almond
 		private static MonoSingleton<T> Inst => _inst;
 		public static T Instance => Inst as T;
 
-		private void Awake()
+		protected virtual void Awake()
 		{
 			if(Inst == null)
 				_inst = this;

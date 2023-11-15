@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Almond;
 
 namespace ARAvoid
 {
@@ -9,15 +10,12 @@ namespace ARAvoid
 	{
 		// State -> AR Setting -> Play
 		//Add AR Manager
-
-		
-
-		private bool setUp = false;
-		private float countTime;
+		[SerializeField] private float countTime;
 		private bool isPaused = false;
 		public bool IsPaused => isPaused;
 		private bool isContacted = false;
 		private PlayData playData;
+		private PlayUI playUI;
 		public float AvoidTime => playData.avoidTime;
 		public void Pause() => isPaused = true;
 		public void Resume() => isPaused = false;
@@ -27,11 +25,9 @@ namespace ARAvoid
 		{
 			playData = new PlayData();
 			isPaused = false;
-			setUp = false;
 			isContacted = false;
 			countTime = Defines.StartCountDown;
-			// Ridar Setup
-			await UniTask.WaitUntil( () => setUp );
+
 			// Count down
 			await UniTask.WaitUntil( () =>
 			{
@@ -50,6 +46,7 @@ namespace ARAvoid
 				if(isPaused == false)
 				{
 					playData.avoidTime += Time.deltaTime;
+					//var moveValue = 
 				}
 
 				return isContacted;
@@ -61,6 +58,15 @@ namespace ARAvoid
 			// Popup Close
 
 			return true;
+		}
+
+		private void OnApplicationFocus(bool focus)
+		{
+			if( focus == false)
+			{ 
+				Pause();
+				PoppupManager.ShowPopup("PausedPopup").Forget();
+			}
 		}
 	}
 }

@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 9fe0e64ce6d3f194f98ab83880c06d54
+  m_SerializeEntries:
+  - m_GUID: 48c17d41fabcd56498710bea536f29ab
+    m_Address: UI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e80d7b281f264504d90cf73abad1c849
+    m_Address: States
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 84aef88b439f13c4c99d66a48f5d1eb4
+    m_Address: Assets/Resources_moved/UI/MapUI.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a9931364ff19d5b439eb1d2b4aef133a
+    m_Address: Assets/Resources_moved/UI/OptionUI.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fac1aab03180bdf46bc0b7deda8b31d5
+    m_Address: Assets/Resources_moved/UI/PlayUI.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ff8c22092f9279044a056da6b4a6514b
+    m_Address: Assets/Resources_moved/UI/MainUI.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f1902f5dc9ff3694faa0a3c8957a93be
+    m_Address: Assets/Resources_moved/States/PlayState.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 42a07e634db02f843b3ca0ba352b94fc
+    m_Address: Assets/Resources_moved/States/MainState.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c2faf56dd3356914498f48b8c9d69414
+    m_Address: Assets/Resources_moved/States/MapState.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 78b0aa416d2041140880ddf0bc2e8281
+    m_Address: Assets/Resources_moved/States/OptionState.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: a34d08e6cb324ec4daeedb5b1659afb3, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: c1196c1a489e9384297ceb961803e8d5, type: 2}
+    - {fileID: 11400000, guid: decc0d4963033ca4588265f43e00f208, type: 2}

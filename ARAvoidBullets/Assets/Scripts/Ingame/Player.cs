@@ -8,5 +8,7 @@ namespace ARAvoid
 {
 	public class Player
 	{
+
+
 	}
 }

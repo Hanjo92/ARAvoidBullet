@@ -9,63 +9,95 @@ using System.Linq;
 
 namespace ARAvoid
 {
+	public enum GameState
+	{
+		None,
+		Main,
+		Option,
+		Map,
+		Play,
+	}
+
 	public class GameManager : MonoSingleton<GameManager>
 	{
 		#region ScriptableObject
-
-		[SerializeField] private DataContainer dataContainer;
+		[SerializeField] private MaterialContainer materialContainer;
 		[SerializeField] private AddressableContainer addressableContainer;
 		#endregion
 
 		[SerializeField] private EffectManager effectManager;
 		[SerializeField] private GameController gameController;
-		[SerializeField] private IPage[] pages; 
 
-		public static DataContainer DataContainer => Instance.dataContainer;
+		private Dictionary<string, GameStateBase> gameStates = new Dictionary<string, GameStateBase>();
+
+		public MaterialContainer MaterialContainer => materialContainer;
 		public static AddressableContainer AddressableContainer => Instance.addressableContainer;
-		public static GameController GameController => Instance.gameController;
-		public static EffectManager EffectManager => Instance.effectManager;
+		public GameController GameController => gameController;
+		public EffectManager EffectManager => effectManager;
 
-		private CancellationTokenSource gameCTS;
+		private CancellationTokenSource cts;
 
 		private SaveData saveData;
-		private IPage currentPage;
+		public float HighScore => saveData.maxTime;
 
-		private bool changingPage;
-		private void Awake()
+		private GameStateBase currentState;
+		private GameState state;
+		public GameState GameState => state;
+
+		protected override void Awake()
+		{
+			base.Awake();
+			Initialize().Forget();			
+		}
+		private async UniTaskVoid Initialize()
 		{
 			saveData = SaveData.Load();
+
+			for(var s = GameState.Main; s <= GameState.Play; s++)
+			{
+				var state = await addressableContainer.InstanceComponent<GameStateBase>($"{s}State");
+				if(state == null)
+				{
+					Debug.LogError($"{s} state not found");
+					continue;
+				}
+				gameStates.Add(s.ToString(), state);
+			}
+			await ThemaManager.Inst.Initialize();
+			ThemaManager.Inst.AddListener((t, b) =>
+			{
+				if(materialContainer == null)
+					return;
+				
+				SetUIMaterials();
+			});
+			SetUIMaterials();
+			await ChangeState(GameState.Main);
+
+			void SetUIMaterials()
+			{
+				var colors = ThemaManager.Inst.GetThemaColors();
+				materialContainer.ApplyThemaToUIMaterials(colors);
+				materialContainer.ApplyThemaToTMP(colors);
+			}
 		}
 
-		public void OnClickChangePage(string key)
+		public async UniTask ChangeState(GameState gameState)
 		{
-			if(changingPage)
+			if(currentState != null)
 			{
-				Debug.LogWarning($"Page changing :: {currentPage.Key}");
-				return;
-			}
-
-			changingPage = true;
-			var nextPage = pages.FirstOrDefault(p => p.Key == key);
-			if(nextPage == null)
-			{
-				Debug.LogWarning($"Can't find page :: {key}");
-				return;
-			}
-			ChangePage(nextPage).Forget();
-		}
-
-		public async UniTaskVoid ChangePage(IPage nextPage)
-		{
-			if(currentPage != null)
-			{
-				await currentPage.Inactive();
+				await currentState.OnLeaveState();
 
 			}
-
-			currentPage = nextPage;
-			await currentPage.Active();
-			changingPage = false;
+			
+			if(gameStates.TryGetValue(gameState.ToString(), out var next))
+			{
+				state = gameState;
+				currentState = next;
+				await currentState.OnEnterState();
+				// create cts
+				currentState.ProcessState().Forget();
+			}
 		}
 	}
 }
