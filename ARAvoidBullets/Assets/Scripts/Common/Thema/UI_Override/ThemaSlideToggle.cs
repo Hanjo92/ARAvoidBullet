@@ -31,7 +31,7 @@ namespace Almond
 
 			themaColors = ThemaManager.Inst.GetThemaColors();
 			var time = Immediate ? 0 : ThemaManager.ChangeThemaTime;
-			ChangeHandleColor(time);
+			ChangeHandleColor(isOn, time);
 			if(toggleBG != null)
 			{
 				toggleBG.DOColor(themaColors.GetColor(bgColorType), time);

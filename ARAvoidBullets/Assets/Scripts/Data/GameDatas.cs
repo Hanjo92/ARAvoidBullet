@@ -53,7 +53,7 @@ namespace ARAvoid
 	{
 		public static bool UseLeftHandMode => PlayerPrefs.GetInt(Keys.UseLeftHand, 0 ) == 1;
 		public static bool ReduceEffect => PlayerPrefs.GetInt(Keys.ReduceEffect, 0) == 1;
-		public static float volume => PlayerPrefs.GetFloat(Keys.GameVolume, 1);
+		public static float Volume => PlayerPrefs.GetFloat(Keys.GameVolume, 1);
 
 		public static void SetUseLeftHandMode(bool value) => PlayerPrefs.SetInt(Keys.UseLeftHand, value ? 1 : 0);
 		public static void SetReduceEffect(bool value) => PlayerPrefs.SetInt(Keys.ReduceEffect, value ? 1 : 0);

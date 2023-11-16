@@ -11,11 +11,13 @@ namespace ARAvoid
 		public override async UniTask OnEnterState()
 		{
 			mapUI ??= await GameManager.AddressableContainer.InstanceComponent<MapUI>(Key + "UI");
+			mapUI.gameObject.SetActive(true);
 			await mapUI.Active();
 		}
 
 		public override async UniTask OnLeaveState()
 		{
+			mapUI.gameObject.SetActive(false);
 			await mapUI.Inactive();
 		}
 

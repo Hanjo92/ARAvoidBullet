@@ -1,9 +1,7 @@
 using Cysharp.Threading.Tasks;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace ARAvoid
 {
@@ -27,11 +25,23 @@ namespace ARAvoid
 
 		public override async UniTask Active()
 		{
+			prevButton.transform.DOScale(Vector3.zero, 0);
+			playButton.transform.DOScale(Vector3.zero, 0);
+
+			prevButton.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
+			playButton.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
+
 			await GameManager.Instance.EffectManager.ToggleGlitch(true);
 		}
 
 		public override async UniTask Inactive()
 		{
+			prevButton.transform.DOScale(Vector3.zero, 0);
+			playButton.transform.DOScale(Vector3.zero, 0);
+
+			prevButton.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
+			playButton.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
+
 			await GameManager.Instance.EffectManager.ToggleGlitch(false);
 		}
 	}

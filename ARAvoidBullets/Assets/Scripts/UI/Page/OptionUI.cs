@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Almond;
 
 namespace ARAvoid
 {
-	public class OptionUI : Almond.PageBase
+	public class OptionUI : PageBase
 	{
 		[SerializeField] private GameObject title;
-		[SerializeField] private Toggle leftHandToggle;
+		[SerializeField] private SlideToggle leftHandToggle;
 		[SerializeField] private Slider volumeSlider;
-		[SerializeField] private Toggle effectToggle;
+		[SerializeField] private SlideToggle effectToggle;
 		[SerializeField] private ThemaChangeUI changeUI;
 		[SerializeField] private Button homeButton;
 
@@ -24,6 +25,12 @@ namespace ARAvoid
 			volumeSlider.onValueChanged.AddListener((v) => OptionData.SetVolume(v));
 			effectToggle.onValueChanged.AddListener(v => OptionData.SetReduceEffect(v));
 			homeButton.onClick.AddListener(() => GameManager.Instance.ChangeState(GameState.Main).Forget());
+
+			leftHandToggle.isOn = OptionData.UseLeftHandMode;
+			leftHandToggle.SetValueImmediately(OptionData.UseLeftHandMode);
+			volumeSlider.value = OptionData.Volume;
+			effectToggle.isOn = OptionData.ReduceEffect;
+			effectToggle.SetValueImmediately(OptionData.ReduceEffect);
 		}
 		private void OnDisable()
 		{

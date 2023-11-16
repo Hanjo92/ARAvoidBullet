@@ -31,24 +31,23 @@ namespace Almond
 			if(effect != null)
 				effect.Play();
 
-			ChangeHandleColor(SlideTime);
-			ChangeHandlePosition(SlideTime);
+			ChangeHandleColor(value, SlideTime);
+			ChangeHandlePosition(value,SlideTime);
 		}
 
 		public void SetValueImmediately(bool newValue)
 		{
-			isOn = newValue;
-			ChangeHandleColor(0);
-			ChangeHandlePosition(0);
+			ChangeHandleColor(newValue, 0);
+			ChangeHandlePosition(newValue, 0);
 		}
 
-		protected virtual void ChangeHandleColor(float time)
+		protected virtual void ChangeHandleColor(bool value, float time)
 		{
 			if(handle == null)
 				return;
-			handle.DOColor(isOn ? SelectedColor : DisabledColor, time);
+			handle.DOColor(value ? SelectedColor : DisabledColor, time);
 		}
-		protected void ChangeHandlePosition(float time)
+		protected void ChangeHandlePosition(bool value, float time)
 		{
 			if(handle == null || handleTrue == null || handleFalse == null)
 				return;
