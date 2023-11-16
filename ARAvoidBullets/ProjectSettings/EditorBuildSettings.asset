@@ -11,3 +11,5 @@ EditorBuildSettings:
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: ddd711b1c62211345843515025c984b8,
       type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: a8664c822960e32449c4b1a5af014eb7,
+      type: 2}

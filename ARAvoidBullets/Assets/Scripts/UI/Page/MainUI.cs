@@ -31,28 +31,12 @@ namespace ARAvoid
 
 		public override async UniTask Active()
 		{
-			title.transform.DOScale(Vector3.zero, 0);
-			playButton.transform.DOScale(Vector3.zero, 0);
-			optionButton.transform.DOScale(Vector3.zero, 0);
-
-			title.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
-			playButton.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
-			optionButton.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
-
-			await GameManager.Instance.EffectManager.ToggleGlitch(true);
+			await GameManager.Instance.EffectManager.ToggleGlitch(false);
 		}
 
 		public override async UniTask Inactive()
 		{
-			title.transform.DOScale(Vector3.one, 0);
-			playButton.transform.DOScale(Vector3.one, 0);
-			optionButton.transform.DOScale(Vector3.one, 0);
-
-			title.transform.DOScale(Vector3.zero, Defines.DefaultScaleTime);
-			playButton.transform.DOScale(Vector3.zero, Defines.DefaultScaleTime);
-			optionButton.transform.DOScale(Vector3.zero, Defines.DefaultScaleTime);
-
-			await GameManager.Instance.EffectManager.ToggleGlitch(false);
+			await GameManager.Instance.EffectManager.ToggleGlitch(true);
 		}
 	}
 }

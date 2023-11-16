@@ -18,13 +18,16 @@ namespace ARAvoid
 		[SerializeField] private Button homeButton;
 
 		public override string Key => Keys.OptionUIKey;
-
+		private void ToggleLeftHand(bool v) => OptionData.SetUseLeftHandMode(v);
+		private void ToggleEffect(bool v) => OptionData.SetReduceEffect(v);
+		private void SlideVolume(float v) => OptionData.SetVolume(v);
+		private void HomeButton() => GameManager.Instance.ChangeState(GameState.Main).Forget();
 		private void OnEnable()
 		{
-			leftHandToggle.onValueChanged.AddListener(v => OptionData.SetUseLeftHandMode(v));
-			volumeSlider.onValueChanged.AddListener((v) => OptionData.SetVolume(v));
-			effectToggle.onValueChanged.AddListener(v => OptionData.SetReduceEffect(v));
-			homeButton.onClick.AddListener(() => GameManager.Instance.ChangeState(GameState.Main).Forget());
+			leftHandToggle.onValueChanged.AddListener(ToggleLeftHand);
+			volumeSlider.onValueChanged.AddListener(SlideVolume);
+			effectToggle.onValueChanged.AddListener(ToggleEffect);
+			homeButton.onClick.AddListener(HomeButton);
 
 			leftHandToggle.isOn = OptionData.UseLeftHandMode;
 			leftHandToggle.SetValueImmediately(OptionData.UseLeftHandMode);
@@ -34,48 +37,20 @@ namespace ARAvoid
 		}
 		private void OnDisable()
 		{
-			leftHandToggle.onValueChanged.RemoveAllListeners();
-			volumeSlider.onValueChanged.RemoveAllListeners();
-			effectToggle.onValueChanged.RemoveAllListeners();
-			homeButton.onClick.RemoveAllListeners();
+			leftHandToggle.onValueChanged.RemoveListener(ToggleLeftHand);
+			volumeSlider.onValueChanged.RemoveListener(SlideVolume);
+			effectToggle.onValueChanged.RemoveListener(ToggleEffect);
+			homeButton.onClick.RemoveListener(HomeButton);
 		}
 
 		public override async UniTask Active()
 		{
-			title.transform.DOScale(Vector3.zero, 0);
-			leftHandToggle.transform.DOScale(Vector3.zero, 0);
-			volumeSlider.transform.DOScale(Vector3.zero, 0);
-			effectToggle.transform.DOScale(Vector3.zero, 0);
-			changeUI.transform.DOScale(Vector3.zero, 0);
-			homeButton.transform.DOScale(Vector3.zero, 0);
-
-			title.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
-			leftHandToggle.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
-			volumeSlider.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
-			effectToggle.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
-			changeUI.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
-			homeButton.transform.DOScale(Vector3.one, Defines.DefaultScaleTime);
-
-			await GameManager.Instance.EffectManager.ToggleGlitch(true);
+			await GameManager.Instance.EffectManager.ToggleGlitch(false);
 		}
 
 		public override async UniTask Inactive()
 		{
-			title.transform.DOScale(Vector3.one, 0);
-			leftHandToggle.transform.DOScale(Vector3.one, 0);
-			volumeSlider.transform.DOScale(Vector3.one, 0);
-			effectToggle.transform.DOScale(Vector3.one, 0);
-			changeUI.transform.DOScale(Vector3.one, 0);
-			homeButton.transform.DOScale(Vector3.one, 0);
-
-			title.transform.DOScale(Vector3.zero, Defines.DefaultScaleTime);
-			leftHandToggle.transform.DOScale(Vector3.zero, Defines.DefaultScaleTime);
-			volumeSlider.transform.DOScale(Vector3.zero, Defines.DefaultScaleTime);
-			effectToggle.transform.DOScale(Vector3.zero, Defines.DefaultScaleTime);
-			changeUI.transform.DOScale(Vector3.zero, Defines.DefaultScaleTime);
-			homeButton.transform.DOScale(Vector3.zero, Defines.DefaultScaleTime);
-
-			await GameManager.Instance.EffectManager.ToggleGlitch(false);
+			await GameManager.Instance.EffectManager.ToggleGlitch(true);
 		}
 	}
 }

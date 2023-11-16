@@ -310,6 +310,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  themaColorType: 0
 --- !u!1 &7593833379518330741
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,6 +447,7 @@ GameObject:
   - component: {fileID: 7593833379622450268}
   - component: {fileID: 7593833379622450269}
   - component: {fileID: 7593833379622450270}
+  - component: {fileID: -580362562798965745}
   m_Layer: 5
   m_Name: PlayUI
   m_TagString: Untagged
@@ -487,7 +489,7 @@ Canvas:
   m_GameObject: {fileID: 7593833379622450267}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -556,6 +558,19 @@ MonoBehaviour:
   pauseButton: {fileID: 0}
   dashButton: {fileID: 0}
   joystick: {fileID: 0}
+--- !u!114 &-580362562798965745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7593833379622450267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc45ef6a515fca4ebd201c0a9351f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTag: MainCamera
 --- !u!1 &7593833379698103456
 GameObject:
   m_ObjectHideFlags: 0
@@ -1124,3 +1139,4 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  themaColorType: 0

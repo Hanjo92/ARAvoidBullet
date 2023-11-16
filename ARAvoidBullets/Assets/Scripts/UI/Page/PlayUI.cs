@@ -44,7 +44,7 @@ namespace ARAvoid
 
 		public override async UniTask Active()
 		{
-			await GameManager.Instance.EffectManager.ToggleGlitch(true);
+			await GameManager.Instance.EffectManager.ToggleGlitch(false);
 			highScore = GameManager.Instance.HighScore;
 			highScoreText.text = TimeSpan.FromSeconds(highScore).ToString(@"hh\:mm\:ss\\.ff");
 			// ¸Ê ¼¼ÆÃ
@@ -52,7 +52,7 @@ namespace ARAvoid
 
 		public override async UniTask Inactive()
 		{
-			await GameManager.Instance.EffectManager.ToggleGlitch(false);
+			await GameManager.Instance.EffectManager.ToggleGlitch(true);
 		}
 
 		public void UpdateScore(float seconds)
