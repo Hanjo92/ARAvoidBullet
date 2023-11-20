@@ -69,6 +69,10 @@ MonoBehaviour:
     m_Address: Assets/Resources_moved/Map/Map.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 91ad65025f59dbd4c97468be4d6a5f30
+    m_Address: Prefab/PausedPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a34d08e6cb324ec4daeedb5b1659afb3, type: 2}
   m_SchemaSet:
