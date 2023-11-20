@@ -555,9 +555,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highScoreText: {fileID: 7593833380813975019}
   currentScoreText: {fileID: 7593833379371595060}
-  pauseButton: {fileID: 0}
-  dashButton: {fileID: 0}
-  joystick: {fileID: 0}
+  pauseButton: {fileID: 7593833380733634498}
+  dashButton: {fileID: 7593833379518330697}
+  joystick: {fileID: 4342468092088628046}
 --- !u!114 &-580362562798965745
 MonoBehaviour:
   m_ObjectHideFlags: 0

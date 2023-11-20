@@ -11,11 +11,9 @@ namespace ARAvoid
         public const int SpreadCount = 8;
 
         public const float DefaultScaleTime = 0.1f;
-
-        public static int FieldLayer = LayerMask.NameToLayer("Field");
         public const float MaxMapHeight = 3f;
 
-        public const float MapMaxAwayDistance = 10f;
+        public const float MapMaxAwayDistance = 2f;
 		
 
         public const float GlitchTime = 1.5f;
@@ -37,5 +35,13 @@ namespace ARAvoid
         public const string UseLeftHand = "Player_Use_Left_Hand";
         public const string GameVolume = "Game_Volume_Level";
         public const string ReduceEffect = "Game_Particle_Reduce";
+    }
+
+    public enum Direction
+    {
+        Forward,
+        Right,
+        Back,
+        Left
     }
 }

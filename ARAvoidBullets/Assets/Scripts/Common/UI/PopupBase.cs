@@ -32,9 +32,10 @@ namespace Almond
 		[SerializeField] private PopupAnimationParam openAnimation;
 		[SerializeField] private PopupAnimationParam closeAnimation;
 		[SerializeField] private Transform root;
+		[SerializeField] protected Button closeButton;
 
-		[SerializeField] private Button closeButton;
-
+		private Action closeAction;
+		public void AddCloseAction(Action action) => closeAction += action;
 		protected virtual void Awake()
 		{
 			popupName = string.IsNullOrEmpty(popupName) ? name : popupName;
@@ -43,6 +44,11 @@ namespace Almond
 			{
 				closeButton.onClick.AddListener(Close);
 			}
+		}
+		protected virtual void OnDisable()
+		{
+			closeAction?.Invoke();
+			closeAction = null;
 		}
 
 		public virtual void Close()
@@ -58,15 +64,17 @@ namespace Almond
 			seq.Append(
 			openAnimation.animationType switch
 			{
-				PopupAnimationParam.AnimationType.Scale =>
-					seq.Append(root.DOScale(openAnimation.startValue, 0)).
-					Append(root.DOScale(openAnimation.endValue, openAnimation.animationTime)),
-				PopupAnimationParam.AnimationType.worldPosition =>
-					seq.Append(root.DOMove(openAnimation.startValue, 0)).
-					Append(root.DOMove(openAnimation.endValue, openAnimation.animationTime)),
-				PopupAnimationParam.AnimationType.localPosition =>
-					seq.Append(root.DOLocalMove(openAnimation.startValue, 0)).
-					Append(root.DOLocalMove(openAnimation.endValue, openAnimation.animationTime)),
+				PopupAnimationParam.AnimationType.Scale => root.DOScale(openAnimation.startValue, 0),
+				PopupAnimationParam.AnimationType.worldPosition => root.DOMove(openAnimation.startValue, 0),
+				PopupAnimationParam.AnimationType.localPosition => root.DOLocalMove(openAnimation.startValue, 0),
+				_ => throw new NotImplementedException(),
+			});
+			seq.Append(
+			openAnimation.animationType switch
+			{
+				PopupAnimationParam.AnimationType.Scale => root.DOScale(openAnimation.endValue, openAnimation.animationTime),
+				PopupAnimationParam.AnimationType.worldPosition => root.DOMove(openAnimation.endValue, openAnimation.animationTime),
+				PopupAnimationParam.AnimationType.localPosition => root.DOLocalMove(openAnimation.endValue, openAnimation.animationTime),
 				_ => throw new NotImplementedException(),
 			});
 			await seq.AsyncWaitForCompletion();
@@ -77,15 +85,17 @@ namespace Almond
 			seq.Append(
 			closeAnimation.animationType switch
 			{
-				PopupAnimationParam.AnimationType.Scale =>
-					seq.Append(root.DOScale(closeAnimation.startValue, 0)).
-					Append(root.DOScale(closeAnimation.endValue, closeAnimation.animationTime)),
-				PopupAnimationParam.AnimationType.worldPosition =>
-					seq.Append(root.DOMove(closeAnimation.startValue, 0)).
-					Append(root.DOMove(closeAnimation.endValue, closeAnimation.animationTime)),
-				PopupAnimationParam.AnimationType.localPosition =>
-					seq.Append(root.DOLocalMove(closeAnimation.startValue, 0)).
-					Append(root.DOLocalMove(closeAnimation.endValue, closeAnimation.animationTime)),
+				PopupAnimationParam.AnimationType.Scale => root.DOScale(closeAnimation.startValue, 0),
+				PopupAnimationParam.AnimationType.worldPosition => root.DOMove(closeAnimation.startValue, 0),
+				PopupAnimationParam.AnimationType.localPosition => root.DOLocalMove(closeAnimation.startValue, 0),
+				_ => throw new NotImplementedException(),
+			});
+			seq.Append(
+			closeAnimation.animationType switch
+			{
+				PopupAnimationParam.AnimationType.Scale => root.DOScale(closeAnimation.endValue, closeAnimation.animationTime),
+				PopupAnimationParam.AnimationType.worldPosition => root.DOMove(closeAnimation.endValue, closeAnimation.animationTime),
+				PopupAnimationParam.AnimationType.localPosition => root.DOLocalMove(closeAnimation.endValue, closeAnimation.animationTime),
 				_ => throw new NotImplementedException(),
 			});
 			await seq.AsyncWaitForCompletion();

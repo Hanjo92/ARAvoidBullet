@@ -22,22 +22,10 @@ namespace ARAvoid
 
 		private float highScore; 
 
-		private void OnEnable()
+		public void AddEvents(Action paused, Action dash)
 		{
-			pauseButton.onClick.AddListener(() =>
-			{
-				GameManager.Instance.GameController.Pause();
-				PoppupManager.ShowPopup("PausedPopup").Forget();
-			});
-		}
-		private void OnDisable()
-		{
-			pauseButton.onClick.RemoveAllListeners();
-		}
+			pauseButton.onClick.AddListener(() => paused.Invoke());
 
-		public void Initialize()
-		{
-			
 		}
 
 		public override string Key => Keys.PlayUIKey;
@@ -46,7 +34,7 @@ namespace ARAvoid
 		{
 			await GameManager.Instance.EffectManager.ToggleGlitch(false);
 			highScore = GameManager.Instance.HighScore;
-			highScoreText.text = TimeSpan.FromSeconds(highScore).ToString(@"hh\:mm\:ss\\.ff");
+			highScoreText.text = TimeSpan.FromSeconds(highScore).ToString(@"hh\:mm\:ss\.ff");
 			// ¸Ê ¼¼ÆÃ
 		}
 
@@ -57,11 +45,11 @@ namespace ARAvoid
 
 		public void UpdateScore(float seconds)
 		{
-			currentScoreText.text = TimeSpan.FromSeconds(seconds).ToString(@"hh\:mm\:ss\\.ff");
+			currentScoreText.text = TimeSpan.FromSeconds(seconds).ToString(@"hh\:mm\:ss\.ff");
 			if(highScore < seconds)
 			{
 				highScore = seconds;
-				highScoreText.text = TimeSpan.FromSeconds(highScore).ToString(@"hh\:mm\:ss\\.ff");
+				highScoreText.text = TimeSpan.FromSeconds(highScore).ToString(@"hh\:mm\:ss\.ff");
 			}
 		}
 	}

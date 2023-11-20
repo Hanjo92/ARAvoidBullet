@@ -1,5 +1,6 @@
 using Almond;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 namespace ARAvoid
@@ -14,16 +15,39 @@ namespace ARAvoid
 		public bool IsPaused => isPaused;
 		private bool isContacted = false;
 		private PlayData playData;
+
+		private PlayerController playerController;
 		private PlayUI playUI;
+		private Map map;
 		public float AvoidTime => playData.avoidTime;
 		public void Pause() => isPaused = true;
 		public void Resume() => isPaused = false;
 
 		public override async UniTask OnEnterState()
 		{
-			playUI ??= await GameManager.AddressableContainer.InstanceComponent<PlayUI>(Key + "UI");
+			if(playUI == null)
+			{
+				playUI = await GameManager.AddressableContainer.InstanceComponent<PlayUI>(Key + "UI");
+				playUI.AddEvents(
+					()=>
+					{
+						Pause();
+						PoppupManager.ShowPopup("PausedPopup", ()=> Resume()).Forget();
+					},
+					()=>{ }
+				);
+			}
+			if(playerController == null)
+			{
+				playerController = await GameManager.AddressableContainer.InstanceComponent<PlayerController>("PlayerController");
+
+			}
+			
 			playUI.gameObject.SetActive(true);
 			await playUI.Active();
+			map ??= await GameManager.AddressableContainer.InstanceComponent<Map>("Map");
+			map.gameObject.SetActive(true);
+			map.Setup(GameManager.Instance.GetMapInfo());
 		}
 
 		public override async UniTask OnLeaveState()
@@ -32,7 +56,7 @@ namespace ARAvoid
 			playUI.gameObject.SetActive(false);
 		}
 
-		public override async UniTask ProcessState()
+		public override async UniTask ProcessState(CancellationTokenSource cts)
 		{
 			playData = new PlayData();
 			isPaused = false;

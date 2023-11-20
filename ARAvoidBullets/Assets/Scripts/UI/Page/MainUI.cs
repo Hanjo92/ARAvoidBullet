@@ -8,7 +8,7 @@ using Almond;
 
 namespace ARAvoid
 {
-	public class MainUI : Almond.PageBase
+	public class MainUI : PageBase
 	{
 		[SerializeField] private Image mask;
 		[SerializeField] private GameObject title;

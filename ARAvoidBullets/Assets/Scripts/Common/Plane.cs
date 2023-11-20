@@ -59,14 +59,14 @@ namespace Almond
 			meshUV0.Clear();
 			Vector3 point = Vector3.zero;
 			point.z = size * -0.5f;
-			for(int v = 0; v <= verticsCount; ++v)
+			for(int v = 0; v < verticsCount; ++v)
 			{
 				point.x = size * -0.5f;
-				for(int h = 0; h <= verticsCount; ++h)
+				for(int h = 0; h < verticsCount; ++h)
 				{
 					positions.Add(point);
 					point.x += interval;
-					meshUV0.Add(new Vector2((float)h / verticsCount, (float)v / verticsCount));
+					meshUV0.Add(new Vector2((float)h / (verticsCount-1), (float)v / (verticsCount-1)));
 				}
 				point.z += interval;
 			}
@@ -74,10 +74,10 @@ namespace Almond
 		private void Triangulate()
 		{
 			triangles.Clear();
-			int zCount = verticsCount + 1;
-			for(int i = 0; i < verticsCount; i++)
+			int zCount = verticsCount;
+			for(int i = 0; i < verticsCount - 1; i++)
 			{
-				for(int j = 0; j < verticsCount; j++)
+				for(int j = 0; j < verticsCount - 1; j++)
 				{
 					int pibot = i * zCount + j;
 

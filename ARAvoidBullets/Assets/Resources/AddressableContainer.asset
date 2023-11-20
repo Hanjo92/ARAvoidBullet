@@ -61,3 +61,15 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+  - key: MapGenerator
+    asset:
+      m_AssetGUID: b6d46f1c728c6ec49bcd2f1ef383feda
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - key: Map
+    asset:
+      m_AssetGUID: f505927fc60bc1d498b9f99de0623165
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

@@ -26,13 +26,10 @@ namespace ARAvoid
 		#endregion
 
 		[SerializeField] private EffectManager effectManager;
-		[SerializeField] private GameController gameController;
-
 		private Dictionary<string, GameStateBase> gameStates = new Dictionary<string, GameStateBase>();
 
 		public MaterialContainer MaterialContainer => materialContainer;
 		public static AddressableContainer AddressableContainer => Instance.addressableContainer;
-		public GameController GameController => gameController;
 		public EffectManager EffectManager => effectManager;
 
 		private CancellationTokenSource cts;
@@ -43,6 +40,10 @@ namespace ARAvoid
 		private GameStateBase currentState;
 		private GameState state;
 		public GameState GameState => state;
+
+		private CreateMapInfo mapInfo;
+		public void SaveMapPositions(CreateMapInfo positions) => mapInfo = positions;
+		public CreateMapInfo GetMapInfo() => mapInfo;
 
 		protected override void Awake()
 		{
@@ -72,6 +73,7 @@ namespace ARAvoid
 				SetUIMaterials();
 			});
 			SetUIMaterials();
+			cts = new CancellationTokenSource();
 			await ChangeState(GameState.Main);
 
 			void SetUIMaterials()
@@ -81,22 +83,23 @@ namespace ARAvoid
 				materialContainer.ApplyThemaToTMP(colors);
 			}
 		}
-
 		public async UniTask ChangeState(GameState gameState)
 		{
+			cts.Cancel();
+			await UniTask.WaitUntil(() => cts.IsCancellationRequested);
+
 			if(currentState != null)
 			{
 				await currentState.OnLeaveState();
-
 			}
-			
+
 			if(gameStates.TryGetValue(gameState.ToString(), out var next))
 			{
 				state = gameState;
 				currentState = next;
 				await currentState.OnEnterState();
-				// create cts
-				currentState.ProcessState().Forget();
+				cts = new CancellationTokenSource();
+				currentState.ProcessState(cts).Forget();
 			}
 		}
 	}

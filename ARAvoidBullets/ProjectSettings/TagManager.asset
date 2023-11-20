@@ -35,8 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Point
+  - Field
   m_SortingLayers:
   - name: Default
     uniqueID: 0

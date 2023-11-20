@@ -44,6 +44,8 @@ namespace Almond
 		public async UniTask<T> InstanceComponent<T>(string key) where T : Component
 		{
 			var gameObject = await Instance(key);
+			if(gameObject == null)
+				return null;
 			return gameObject.GetComponent<T>();
 		}
 	}

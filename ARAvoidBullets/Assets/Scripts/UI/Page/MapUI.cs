@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 namespace ARAvoid
 {
@@ -12,16 +13,8 @@ namespace ARAvoid
 
 		public override string Key => Keys.MapUIKey;
 
-		private void OnEnable()
-		{
-			prevButton.onClick.AddListener(() => GameManager.Instance.ChangeState(GameState.Main).Forget());
-			playButton.onClick.AddListener(() => GameManager.Instance.ChangeState(GameState.Play).Forget());
-		}
-		private void OnDisable()
-		{
-			prevButton.onClick.RemoveAllListeners();
-			playButton.onClick.RemoveAllListeners();
-		}
+		public void AddPrevButtonListener(Action onClick) => prevButton.onClick.AddListener(()=>onClick.Invoke());
+		public void AddPlayButtonListener(Action onClick) => playButton.onClick.AddListener(() => onClick.Invoke());
 
 		public override async UniTask Active()
 		{

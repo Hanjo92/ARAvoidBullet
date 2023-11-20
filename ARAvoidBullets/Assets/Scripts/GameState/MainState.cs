@@ -1,5 +1,6 @@
 using Almond;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 
 namespace ARAvoid
 {
@@ -21,7 +22,7 @@ namespace ARAvoid
 			mainUI.gameObject.SetActive(false);
 		}
 
-		public override async UniTask ProcessState()
+		public override async UniTask ProcessState(CancellationTokenSource cts)
 		{
 		}
 	}

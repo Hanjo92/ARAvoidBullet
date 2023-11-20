@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ARAvoid
 {
-	public static class DataExtention 
+	public static class DataExtension 
 	{
 		public static void SavePlayData( this SaveData savedData )
 		{

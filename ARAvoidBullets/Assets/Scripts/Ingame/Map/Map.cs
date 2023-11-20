@@ -21,12 +21,14 @@ namespace ARAvoid
 			mesh = meshFilter.mesh;
 		}
 
-		public void SetupVertices(Vector3[] coords)
+		public void Setup(CreateMapInfo mapInfo)
 		{
-			vertices = coords;
+			transform.position = mapInfo.rootPosition;
+			transform.eulerAngles = mapInfo.rootEuler;
+
+			vertices = mapInfo.positions;
 			mesh.SetVertices( vertices );
 			mesh.RecalculateNormals();
-
 		}
 
 		public void SetThema(Thema thema)

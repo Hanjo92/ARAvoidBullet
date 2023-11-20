@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 namespace Almond
@@ -8,6 +9,6 @@ namespace Almond
 		public abstract string Key { get; }
 		public abstract UniTask OnEnterState();
 		public abstract UniTask OnLeaveState();
-		public abstract UniTask ProcessState();
+		public abstract UniTask ProcessState(CancellationTokenSource cts);
 	}
 }

@@ -1,5 +1,6 @@
 using ARAvoid;
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ namespace Almond
 			return false;
 		}
 
-		public static async UniTask<PopupBase> ShowPopup(string popupName)
+		public static async UniTask<PopupBase> ShowPopup(string popupName, Action closeAction = null)
 		{
 			PopupBase popup = null;
 			if(IsActivedPoppup(popupName, ref popup))
@@ -32,8 +33,10 @@ namespace Almond
 			{
 				Debug.Log($"Instancing Popup :: {popupName}");
 				popup = await AddressableContainer.InstanceComponent<PopupBase>(popupName);
+				popups.Add(popupName, popup);
 			}
 
+			popup.AddCloseAction(closeAction);
 			popup.gameObject.SetActive(true);
 			await popup.OpenAnimation();
 			return popup;
@@ -60,9 +63,16 @@ namespace Almond
 			{
 				return;
 			}
-
+			ScreenLock.Lock();
 			await popup.CloseAnimation();
 			popup.gameObject.SetActive(false);
+			ScreenLock.Unlock();
+		}
+
+		public static PopupBase AddCloseAction(this PopupBase popup, Action action)
+		{
+			popup.AddCloseAction(action);
+			return popup;
 		}
 	}
 }
