@@ -52,6 +52,7 @@ namespace ARAvoid
 		}
 		private async UniTaskVoid Initialize()
 		{
+			SimplePool.AddressableContainer = addressableContainer;
 			saveData = SaveData.Load();
 
 			for(var s = GameState.Main; s <= GameState.Play; s++)

@@ -31,5 +31,10 @@ namespace ARAvoid
 		{
 
 		}
+		
+		private void OnTriggerEnter(Collider other)
+		{
+			
+		}
 	}
 }

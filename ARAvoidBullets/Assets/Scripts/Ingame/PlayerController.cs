@@ -6,19 +6,12 @@ using Almond;
 
 namespace ARAvoid
 {
-	public class PlayerController : MonoBehaviour
+	public class PlayerController : FixedJoystick
 	{
-		private Joystick mJoystick;
-
-
-		public void Setup(Joystick joystick)
+		public Vector3 GetControllerValue(float deltaTime)
 		{
-			mJoystick = joystick;
-		}
-
-		public void PlayerUpdate(float deltaTime)
-		{
-			
+			var direction = Vector3.forward * Vertical + Vector3.right * Horizontal;
+			return direction;
 		}
 	}
 }

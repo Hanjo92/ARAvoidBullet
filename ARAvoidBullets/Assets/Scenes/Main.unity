@@ -156,7 +156,6 @@ MonoBehaviour:
   addressableContainer: {fileID: 11400000, guid: 439bbdde97b028c44b867bcb4c953831,
     type: 2}
   effectManager: {fileID: 1379927967}
-  gameController: {fileID: 0}
 --- !u!4 &175907544
 Transform:
   m_ObjectHideFlags: 0

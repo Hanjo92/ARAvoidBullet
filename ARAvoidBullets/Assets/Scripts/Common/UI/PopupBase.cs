@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Almond
 {
-	public class PopupBase : MonoBehaviour, IPoppup
+	public class PopupBase : MonoBehaviour, IPoppup, IPoolObj
 	{
 		[SerializeField] private string popupName; 
 
@@ -45,6 +45,11 @@ namespace Almond
 				closeButton.onClick.AddListener(Close);
 			}
 		}
+		protected virtual void OnEnable()
+		{
+
+		}
+
 		protected virtual void OnDisable()
 		{
 			closeAction?.Invoke();
@@ -58,6 +63,9 @@ namespace Almond
 
 		public bool Open { get; set; }
 		public string Key => popupName;
+
+		public string TemplateKey => popupName;
+
 		public async UniTask OpenAnimation()
 		{
 			var seq = DOTween.Sequence();
@@ -99,6 +107,15 @@ namespace Almond
 				_ => throw new NotImplementedException(),
 			});
 			await seq.AsyncWaitForCompletion();
+		}
+
+		public virtual void Init(object[] param = null)
+		{
+		}
+
+		public void Release()
+		{
+			SimplePool.Release(this);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 using Almond;
 using Cysharp.Threading.Tasks;
+using System;
 using System.Threading;
 using UnityEngine;
 
@@ -13,7 +14,8 @@ namespace ARAvoid
 		[SerializeField] private float countTime;
 		private bool isPaused = false;
 		public bool IsPaused => isPaused;
-		private bool isContacted = false;
+		private bool isCountDown = false;
+
 		private PlayData playData;
 
 		private PlayerController playerController;
@@ -32,15 +34,20 @@ namespace ARAvoid
 					()=>
 					{
 						Pause();
-						PoppupManager.ShowPopup("PausedPopup", ()=> Resume()).Forget();
+						PoppupManager.ShowPopup("PausedPopup",
+							new object[]
+							{
+								(Action)(()=>{Resume();})
+							}).Forget();
 					},
-					()=>{ }
+					()=>
+					{
+						Player.Inst.Dash();
+						playData.dashCount++;
+					}
 				);
-			}
-			if(playerController == null)
-			{
-				playerController = await GameManager.AddressableContainer.InstanceComponent<PlayerController>("PlayerController");
 
+				playerController = playUI.GetJoyStick();
 			}
 			
 			playUI.gameObject.SetActive(true);
@@ -60,37 +67,42 @@ namespace ARAvoid
 		{
 			playData = new PlayData();
 			isPaused = false;
-			isContacted = false;
+			isCountDown = true;
 			countTime = Defines.StartCountDown;
 
+			var countPopup = await PoppupManager.ShowPopup<CountDownPopup>("CountDownPopup");
+			ScreenLock.Lock();
 			// Count down
 			await UniTask.WaitUntil(() =>
 			{
 				if(isPaused == false)
 				{
 					countTime -= Time.deltaTime;
-					// TODO : Update Count UI
+					countPopup.UpdateCount(countTime);
 				}
 
 				return countTime <= 0;
 			});
+			ScreenLock.Unlock();
+			isCountDown = false;
 			// Game Play
 			await UniTask.WaitUntil(() =>
 			{
 				if(isPaused == false)
 				{
-					playData.avoidTime += Time.deltaTime;
+					var deltaTime = Time.deltaTime;
+					playData.avoidTime += deltaTime;
+					var moveValue = playerController.GetControllerValue(deltaTime);
+					Player.Inst.PlayerUpdate(moveValue, deltaTime);
 					playUI.UpdateScore(playData.avoidTime);
-					//var moveValue = 
+					playUI.UpdateCoolTime(Player.Inst.CoolTimeRatio);
 				}
 
-				return isContacted;
+				return isCountDown;
 			});
 			// Direction
 
-			// Wait Input
-
-			// Popup Close
+			var endPopup = await PoppupManager.ShowPopup("GameEndPopup");
 		}
 
 		private void OnApplicationFocus(bool focus)
@@ -98,11 +110,29 @@ namespace ARAvoid
 			if(GameManager.Instance.GameState != GameState.Play)
 				return;
 
+			if(isCountDown)
+			{
+				if(focus)
+				{
+					Resume();
+				}
+				else
+				{
+					Pause();
+				}
+				return;
+			}
+
 			if(focus == false)
 			{
 				Pause();
-				PoppupManager.ShowPopup("PausedPopup").Forget();
+				PoppupManager.ShowPopup("PausedPopup",
+							new object[]
+							{
+								(Action)(()=>{Resume();})
+							}).Forget();
 			}
+			
 		}
 	}
 }

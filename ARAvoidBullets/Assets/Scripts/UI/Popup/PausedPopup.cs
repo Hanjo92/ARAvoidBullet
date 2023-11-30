@@ -1,5 +1,6 @@
 using Almond;
 using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,13 @@ namespace ARAvoid
 				PoppupManager.CloseAsync(this).ContinueWith(()=>GameManager.Instance.ChangeState(GameState.Main).Forget()).Forget();
 			});
 			resumeButton.onClick.AddListener(()=> { Close(); });
+		}
+		public override void Init(object[] param = null)
+		{
+			if(param != null)
+			{
+				AddCloseAction((Action)param[0]);
+			}
 		}
 	}
 }

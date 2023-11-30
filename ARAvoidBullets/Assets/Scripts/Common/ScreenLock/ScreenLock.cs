@@ -8,6 +8,10 @@ public static class ScreenLock
 	private static EventSystem current;
 	public static void Lock()
 	{
+		if(current != null && current.enabled == false)
+		{
+			return;
+		}
 		current = EventSystem.current;
 		current.enabled = false;
 	}

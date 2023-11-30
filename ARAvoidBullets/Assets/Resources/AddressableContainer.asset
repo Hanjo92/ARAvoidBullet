@@ -79,3 +79,15 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+  - key: GameEndPopup
+    asset:
+      m_AssetGUID: 71a8578d0a518dd4db6f3e15cf92fb02
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - key: CountDownPopup
+    asset:
+      m_AssetGUID: d3065e62a98c40846a107ad5980cf1bb
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace Almond
 {
@@ -13,19 +14,20 @@ namespace Almond
 
 	public class SimplePool
 	{
+		public static AddressableContainer AddressableContainer;
 		public static Dictionary<string, Queue<MonoBehaviour>> poolDictionary = new Dictionary<string, Queue<MonoBehaviour>>();
 
-		public static T Instantiate<T>(T template, object[] param = null) where T : MonoBehaviour, IPoolObj
+		public static async UniTask<T> Instantiate<T>(string key, object[] param = null) where T : MonoBehaviour, IPoolObj
 		{
-			var key = template.TemplateKey;
-			if(string.IsNullOrEmpty(key))
-			{
-				key = template.gameObject.name.ToString();
-			}
 			var pooledObj = GetPooledObject<T>(key, param);
 			if(pooledObj == null)
 			{
-				pooledObj = Object.Instantiate(template);
+				pooledObj = await AddressableContainer.InstanceComponent<T>(key);
+				if(pooledObj == null)
+				{
+					Debug.LogError($"No Asset :: {key}, Type :: {typeof(T)}");
+					return null;
+				}
 				pooledObj.Init(param);
 			}
 

@@ -19,13 +19,9 @@ namespace ARAvoid
 
 	public class MapGenerator : MonoBehaviour
 	{
-		public int verticsCount = 10;
-		public float size = 10f;
-
 		[SerializeField] private VertexPoint[] vertexPositions;
 		[SerializeField] AssetReference pointPrefab;
 		[SerializeField] private LayerMask fieldLayer;
-		private float Interval => size / verticsCount;
 
 		private Transform mapRoot;
 		private bool setup = false;
@@ -67,6 +63,9 @@ namespace ARAvoid
 
 			async UniTask CreatePoints()
 			{
+				var verticsCount = Defines.MapVerticsCount;
+				var size = Defines.MapSize;
+
 				vertexPositions = new VertexPoint[verticsCount * verticsCount];
 				Vector3 position = Vector3.zero;
 				position.z = size * -0.5f;
@@ -81,10 +80,10 @@ namespace ARAvoid
 						vertexPositions[index] = obj.GetComponent<VertexPoint>();
 						vertexPositions[index].transform.SetParent(mapRoot);
 						SetPosition(vertexPositions[index].transform, position);
-						position.x += Interval;
+						position.x += Defines.MapVerticsInterval;
 
 					}
-					position.z += Interval;
+					position.z += Defines.MapVerticsInterval;
 					await UniTask.Delay(TimeSpan.FromSeconds(Defines.DefaultScaleTime * 0.5f));
 				}
 				for(int v = 0; v < verticsCount; v++)

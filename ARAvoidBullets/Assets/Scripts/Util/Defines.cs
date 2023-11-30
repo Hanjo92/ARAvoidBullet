@@ -14,10 +14,15 @@ namespace ARAvoid
         public const float MaxMapHeight = 3f;
 
         public const float MapMaxAwayDistance = 2f;
-		
+        public const int MapVerticsCount = 20;
+        public const float MapSize = 1;
+        public const float MapVerticsInterval = MapSize / MapVerticsCount;
 
-        public const float GlitchTime = 1.5f;
+		public const float GlitchTime = 1.5f;
 		public const string GlitchRatioProperty = "_GlitchRatio";
+
+        public const float PlayerDefaultSpeed = 1f;
+        public const float DashCoolTime = 3f;
 	}
 
     public static class Keys

@@ -8,7 +8,6 @@ namespace Almond
 {
 	public static class PoppupManager
 	{
-		private static AddressableContainer AddressableContainer => GameManager.AddressableContainer;
 		private static Dictionary<string, PopupBase> popups = new Dictionary<string, PopupBase>();
 
 		private static bool IsActivedPoppup(string popupName, ref PopupBase popup)
@@ -20,7 +19,7 @@ namespace Almond
 			return false;
 		}
 
-		public static async UniTask<PopupBase> ShowPopup(string popupName, Action closeAction = null)
+		public static async UniTask<PopupBase> ShowPopup(string popupName, object[] param = null)
 		{
 			PopupBase popup = null;
 			if(IsActivedPoppup(popupName, ref popup))
@@ -32,15 +31,24 @@ namespace Almond
 			if(popup == null)
 			{
 				Debug.Log($"Instancing Popup :: {popupName}");
-				popup = await AddressableContainer.InstanceComponent<PopupBase>(popupName);
+				popup = await SimplePool.Instantiate<PopupBase>(popupName, param);
 				popups.Add(popupName, popup);
 			}
-
-			popup.AddCloseAction(closeAction);
+			else
+			{
+				popup.Init(param);
+			}
 			popup.gameObject.SetActive(true);
 			await popup.OpenAnimation();
 			return popup;
 		}
+		public static async UniTask<T> ShowPopup<T>(string popupName, object[] param = null) where T : PopupBase
+		{
+			var popup = await ShowPopup(popupName);
+
+			return popup == null ? null : popup as T;
+		}
+
 
 		public static void Close(PopupBase popup)
 		{
@@ -65,14 +73,8 @@ namespace Almond
 			}
 			ScreenLock.Lock();
 			await popup.CloseAnimation();
-			popup.gameObject.SetActive(false);
+			popup.Release();
 			ScreenLock.Unlock();
-		}
-
-		public static PopupBase AddCloseAction(this PopupBase popup, Action action)
-		{
-			popup.AddCloseAction(action);
-			return popup;
 		}
 	}
 }

@@ -73,6 +73,14 @@ MonoBehaviour:
     m_Address: Prefab/PausedPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 71a8578d0a518dd4db6f3e15cf92fb02
+    m_Address: Assets/Resources_moved/Prefab/GameEndPopup.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d3065e62a98c40846a107ad5980cf1bb
+    m_Address: Assets/Resources_moved/Prefab/CountDown.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a34d08e6cb324ec4daeedb5b1659afb3, type: 2}
   m_SchemaSet:

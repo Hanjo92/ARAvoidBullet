@@ -15,17 +15,16 @@ namespace ARAvoid
 		[SerializeField] private TextMeshProUGUI currentScoreText;
 		[SerializeField] private Button pauseButton;
 		[SerializeField] private Button dashButton;
-		[SerializeField] private Joystick joystick;
+		[SerializeField] private Image coolTime;
+		[SerializeField] private PlayerController joystick;
 
-		public Vector3 JoystickValue
-			=> (joystick == null) ? Vector3.zero : (Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal);
+		private float highScore;
 
-		private float highScore; 
-
+		public PlayerController GetJoyStick() => joystick;
 		public void AddEvents(Action paused, Action dash)
 		{
 			pauseButton.onClick.AddListener(() => paused.Invoke());
-
+			dashButton.onClick.AddListener(() => dash.Invoke());
 		}
 
 		public override string Key => Keys.PlayUIKey;
@@ -51,6 +50,11 @@ namespace ARAvoid
 				highScore = seconds;
 				highScoreText.text = TimeSpan.FromSeconds(highScore).ToString(@"hh\:mm\:ss\.ff");
 			}
+
+		}
+		public void UpdateCoolTime(float ratio)
+		{
+			coolTime.fillAmount = 1 - ratio;
 		}
 	}
 }
