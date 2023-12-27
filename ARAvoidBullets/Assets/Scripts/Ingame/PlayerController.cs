@@ -8,7 +8,7 @@ namespace ARAvoid
 {
 	public class PlayerController : FixedJoystick
 	{
-		public Vector3 GetControllerValue(float deltaTime)
+		public Vector3 GetControllerValue()
 		{
 			var direction = Vector3.forward * Vertical + Vector3.right * Horizontal;
 			return direction;

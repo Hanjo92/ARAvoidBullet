@@ -20,7 +20,7 @@ namespace ARAvoid
 
 		private PlayerController playerController;
 		private PlayUI playUI;
-		private Map map;
+		private BulletSpawner bulletSpawner;
 		public float AvoidTime => playData.avoidTime;
 		public void Pause() => isPaused = true;
 		public void Resume() => isPaused = false;
@@ -52,15 +52,16 @@ namespace ARAvoid
 			
 			playUI.gameObject.SetActive(true);
 			await playUI.Active();
-			map ??= await GameManager.AddressableContainer.InstanceComponent<Map>("Map");
-			map.gameObject.SetActive(true);
-			map.Setup(GameManager.Instance.GetMapInfo());
+			await GameManager.Instance.SetMap();
+			bulletSpawner ??= new BulletSpawner();
 		}
 
 		public override async UniTask OnLeaveState()
 		{
+			await bulletSpawner.DisableAllBullets();
 			await playUI.Inactive();
 			playUI.gameObject.SetActive(false);
+			GameManager.Instance.DisableMap();
 		}
 
 		public override async UniTask ProcessState(CancellationTokenSource cts)
@@ -92,16 +93,16 @@ namespace ARAvoid
 				{
 					var deltaTime = Time.deltaTime;
 					playData.avoidTime += deltaTime;
-					var moveValue = playerController.GetControllerValue(deltaTime);
+					var moveValue = playerController.GetControllerValue();
 					Player.Inst.PlayerUpdate(moveValue, deltaTime);
+					bulletSpawner.Update(deltaTime);
 					playUI.UpdateScore(playData.avoidTime);
 					playUI.UpdateCoolTime(Player.Inst.CoolTimeRatio);
 				}
 
-				return isCountDown;
+				return Player.Inst.IsDead;
 			});
 			// Direction
-
 			var endPopup = await PoppupManager.ShowPopup("GameEndPopup");
 		}
 
@@ -133,6 +134,17 @@ namespace ARAvoid
 							}).Forget();
 			}
 			
+		}
+
+		private void FixedUpdate()
+		{
+			if(isPaused)
+				return;
+			if(Player.Inst.IsDead)
+				return;
+
+			Player.Inst.Move(playerController.GetControllerValue(), Time.fixedDeltaTime);
+			bulletSpawner.BulletMove(Time.fixedDeltaTime);
 		}
 	}
 }

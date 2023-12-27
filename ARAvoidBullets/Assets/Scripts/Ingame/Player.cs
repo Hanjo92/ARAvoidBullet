@@ -1,11 +1,12 @@
 ﻿using Almond;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace ARAvoid
 {
 	public class Player : Singleton<Player>
 	{
-		private Transform actor;
+		private PlayerActor actor;
 
 		// Stat
 		private float speed = 3;
@@ -15,19 +16,21 @@ namespace ARAvoid
 		private float fTime = 0;
 		public float CoolTimeRatio => Mathf.Clamp(fTime / Defines.DashCoolTime, 0, 1);
 		public bool CanDash => CoolTimeRatio >= 1f;
-
+		private bool isDead = false;
+		public bool IsDead => isDead;
 		public void Initialize(Map map)
 		{
 			currentMap = map;
 			speed = Defines.PlayerDefaultSpeed;
+			isDead = false;
 		}
 
-		public void Move(float horizontal, float vertical, float deltaTime)
+		public void Move(Vector3 direction, float deltaTime)
 		{
-			var direction = Vector3.forward * vertical + Vector3.right * horizontal;
-			var current = actor.position;
+			var current = actor.Position;
 			var next = current + (direction * Defines.MapVerticsInterval);
-			
+
+			actor.ActorMove(next);
 		}
 		public void Dash()
 		{
@@ -38,7 +41,7 @@ namespace ARAvoid
 
 		public void Contect()
 		{
-
+			isDead = true;
 		}
 
 		public void PlayerUpdate(Vector3 direction, float deltaTime)

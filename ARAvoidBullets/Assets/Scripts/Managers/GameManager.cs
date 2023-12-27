@@ -44,6 +44,21 @@ namespace ARAvoid
 		private CreateMapInfo mapInfo;
 		public void SaveMapPositions(CreateMapInfo positions) => mapInfo = positions;
 		public CreateMapInfo GetMapInfo() => mapInfo;
+		private Map map;
+		public async UniTask SetMap()
+		{
+			if(map == null)
+			{
+				map = await addressableContainer.InstanceComponent<Map>("Map");
+			}
+			map.gameObject.SetActive(true);
+			map.Setup(GetMapInfo());
+		}
+		public void DisableMap()
+		{
+			if(map != null)
+				map.gameObject.SetActive(false);
+		}
 
 		protected override void Awake()
 		{

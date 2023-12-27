@@ -23,6 +23,9 @@ namespace ARAvoid
 
         public const float PlayerDefaultSpeed = 1f;
         public const float DashCoolTime = 3f;
+
+        public static int MapLayer => LayerMask.NameToLayer("Field");
+        public static LayerMask MapMask => 1 << MapLayer;
 	}
 
     public static class Keys

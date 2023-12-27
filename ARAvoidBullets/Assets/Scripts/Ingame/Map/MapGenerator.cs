@@ -21,7 +21,6 @@ namespace ARAvoid
 	{
 		[SerializeField] private VertexPoint[] vertexPositions;
 		[SerializeField] AssetReference pointPrefab;
-		[SerializeField] private LayerMask fieldLayer;
 
 		private Transform mapRoot;
 		private bool setup = false;
@@ -130,7 +129,7 @@ namespace ARAvoid
 				var position = view.transform.position;
 				var viewDirection = view.transform.forward;
 				var distance = Defines.MapMaxAwayDistance;
-				if(Physics.Raycast(position, viewDirection, out var info, Defines.MapMaxAwayDistance, fieldLayer))
+				if(Physics.Raycast(position, viewDirection, out var info, Defines.MapMaxAwayDistance, Defines.MapMask))
 				{
 					distance = info.distance;
 				}
